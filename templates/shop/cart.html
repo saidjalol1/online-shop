@@ -1,0 +1,32 @@
+{% extends "shop-wrapper.html" %}
+{% block content %}
+<div class="container px-4 px-lg-5 mt-5">
+    <div class="container px-4 px-lg-5 mt-5">
+        <h1>Savatcha</h1>
+        <div class="row gx-4 gx-lg-5 row-cols-1 justify-content-center">
+            <div class="col mb-5" style="display: flex; align-items: center;">
+    
+                    <!-- Product image-->
+                   <div style="width: 300px;">
+                    <img class="card-img-top" src="https://dummyimage.com/450x300/dee2e6/6c757d.jpg" alt="..." />
+                   </div>
+                   <div>
+                    <h5>Special Product</h5>
+                   </div>
+                   <div>
+                     <p>25ta</p>
+                   </div>
+         
+                        <div class="card-footer p-4 pt-0 border-top-0 bg-transparent" onclick="toggleAnswer('2')" id="2">
+                            <div class="text-center"><a class="btn btn-outline-dark mt-auto" >Yana qo'shish</a></div>
+                        </div>
+                        <div id="counter-2" class="counter border-top-0 mb-3"  data-product-id="2">
+                            <i class="bi bi-dash-circle-fill" id="decrement" onclick="decrement(this)"></i>
+                            <span id="count">0</span>
+                            <i class="bi bi-plus-circle-fill" id="increment"  onclick="increment(this)"></i>
+                        </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock content %}
