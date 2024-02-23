@@ -1,32 +1,186 @@
 {% extends "shop-wrapper.html" %}
+
 {% block content %}
 <div class="container px-4 px-lg-5 mt-5">
-    <div class="container px-4 px-lg-5 mt-5">
-        <h1>Savatcha</h1>
-        <div class="row gx-4 gx-lg-5 row-cols-1 justify-content-center">
-            <div class="col mb-5" style="display: flex; align-items: center;">
-    
-                    <!-- Product image-->
-                   <div style="width: 300px;">
-                    <img class="card-img-top" src="https://dummyimage.com/450x300/dee2e6/6c757d.jpg" alt="..." />
-                   </div>
-                   <div>
-                    <h5>Special Product</h5>
-                   </div>
-                   <div>
-                     <p>25ta</p>
-                   </div>
-         
-                        <div class="card-footer p-4 pt-0 border-top-0 bg-transparent" onclick="toggleAnswer('2')" id="2">
-                            <div class="text-center"><a class="btn btn-outline-dark mt-auto" >Yana qo'shish</a></div>
+    <div class="row gx-4 gx-lg-5 row-cols-1 row-cols-md-3 row-cols-xl-4 justify-content-center">
+        <div class="col mb-5">
+            <div class="card h-100">
+                <!-- Sale badge-->
+                <div class="badge bg-dark text-white position-absolute" style="top: 0.5rem; right: 0.5rem">Sale</div>
+                <!-- Product image-->
+                <img class="card-img-top" src="https://dummyimage.com/450x300/dee2e6/6c757d.jpg" alt="..." />
+                <!-- Product details-->
+                <div class="card-body p-4">
+                    <div class="text">
+                        <!-- Product name-->
+                        <div style="display: flex;justify-content: space-between;align-items: center;width: 100%;">
+                            <div>
+                                <h5 class="fw-bolder">Special Item</h5>
+                            </div>
                         </div>
-                        <div id="counter-2" class="counter border-top-0 mb-3"  data-product-id="2">
-                            <i class="bi bi-dash-circle-fill" id="decrement" onclick="decrement(this)"></i>
-                            <span id="count">0</span>
-                            <i class="bi bi-plus-circle-fill" id="increment"  onclick="increment(this)"></i>
+                       <div class="mt-2">
+                        <span style="font-weight: bold;">Jami:</span><span style="color: red;">3000 so'm</span>
+                       </div>
+                       <div class="mt-2">
+                        <span style="font-weight: bold;">Soni:</span><span style="color: red;">30 ta</span>
+                       </div>
+                    </div>
+                </div>
+                <!-- Product actions-->
+                <div class="card-footer p-4 pt-0 border-top-0 bg-transparent" onclick="toggleAnswer('1')" id="1">
+                    <div class="text-center"><a class="btn btn-outline-dark mt-auto" >Yana Qo'shish</a></div>
+                </div>
+                <div id="counter-1" class="counter border-top-0 mb-3"  data-product-id="1">
+                    <i class="bi bi-dash-circle-fill" id="decrement" onclick="decrement(this)"></i>
+                    <span id="count">0</span>
+                    <i class="bi bi-plus-circle-fill" id="increment"  onclick="increment(this)"></i>
+                </div>
+            </div>
+        </div>
+        <div class="col mb-5">
+            <div class="card h-100">
+                <!-- Sale badge-->
+                <div class="badge bg-dark text-white position-absolute" style="top: 0.5rem; right: 0.5rem">Sale</div>
+                <!-- Product image-->
+                <img class="card-img-top" src="https://dummyimage.com/450x300/dee2e6/6c757d.jpg" alt="..." />
+                <!-- Product details-->
+                <div class="card-body p-4">
+                    <div class="text">
+                        <!-- Product name-->
+                        <div style="display: flex;justify-content: space-between;align-items: center;width: 100%;">
+                            <div>
+                                <h5 class="fw-bolder">Special Item</h5>
+                            </div>
                         </div>
+                       <div class="mt-2">
+                        <span style="font-weight: bold;">Jami:</span><span style="color: red;">3000 so'm</span>
+                       </div>
+                       <div class="mt-2">
+                        <span style="font-weight: bold;">Soni:</span><span style="color: red;">30 ta</span>
+                       </div>
+                    </div>
+                </div>
+                <!-- Product actions-->
+                <div class="card-footer p-4 pt-0 border-top-0 bg-transparent" onclick="toggleAnswer('2')" id="2">
+                    <div class="text-center"><a class="btn btn-outline-dark mt-auto" >Yana Qo'shish</a></div>
+                </div>
+                <div id="counter-2" class="counter border-top-0 mb-3"  data-product-id="2">
+                    <i class="bi bi-dash-circle-fill" id="decrement" onclick="decrement(this)"></i>
+                    <span id="count">0</span>
+                    <i class="bi bi-plus-circle-fill" id="increment"  onclick="increment(this)"></i>
+                </div>
+            </div>
+        </div>
+        <div class="col mb-5">
+            <div class="card h-100">
+                <!-- Sale badge-->
+                <div class="badge bg-dark text-white position-absolute" style="top: 0.5rem; right: 0.5rem">Sale</div>
+                <!-- Product image-->
+                <img class="card-img-top" src="https://dummyimage.com/450x300/dee2e6/6c757d.jpg" alt="..." />
+                <!-- Product details-->
+                <div class="card-body p-4">
+                    <div class="text">
+                        <!-- Product name-->
+                        <div style="display: flex;justify-content: space-between;align-items: center;width: 100%;">
+                            <div>
+                                <h5 class="fw-bolder">Special Item</h5>
+                            </div>
+                        </div>
+                       <div class="mt-2">
+                        <span style="font-weight: bold;">Jami:</span><span style="color: red;">3000 so'm</span>
+                       </div>
+                       <div class="mt-2">
+                        <span style="font-weight: bold;">Soni:</span><span style="color: red;">30 ta</span>
+                       </div>
+                    </div>
+                </div>
+                <!-- Product actions-->
+                <div class="card-footer p-4 pt-0 border-top-0 bg-transparent" onclick="toggleAnswer('3')" id="3">
+                    <div class="text-center"><a class="btn btn-outline-dark mt-auto" >Yana Qo'shish</a></div>
+                </div>
+                <div id="counter-3" class="counter border-top-0 mb-3"  data-product-id="3">
+                    <i class="bi bi-dash-circle-fill" id="decrement" onclick="decrement(this)"></i>
+                    <span id="count">0</span>
+                    <i class="bi bi-plus-circle-fill" id="increment"  onclick="increment(this)"></i>
+                </div>
+            </div>
+        </div>
+        <div class="col mb-5">
+            <div class="card h-100">
+                <!-- Sale badge-->
+                <div class="badge bg-dark text-white position-absolute" style="top: 0.5rem; right: 0.5rem">Sale</div>
+                <!-- Product image-->
+                <img class="card-img-top" src="https://dummyimage.com/450x300/dee2e6/6c757d.jpg" alt="..." />
+                <!-- Product details-->
+                <div class="card-body p-4">
+                    <div class="text">
+                        <!-- Product name-->
+                        <div style="display: flex;justify-content: space-between;align-items: center;width: 100%;">
+                            <div>
+                                <h5 class="fw-bolder">Special Item</h5>
+                            </div>
+                        </div>
+                       <div class="mt-2">
+                        <span style="font-weight: bold;">Jami:</span><span style="color: red;">3000 so'm</span>
+                       </div>
+                       <div class="mt-2">
+                        <span style="font-weight: bold;">Soni:</span><span style="color: red;">30 ta</span>
+                       </div>
+                    </div>
+                </div>
+                <!-- Product actions-->
+                <div class="card-footer p-4 pt-0 border-top-0 bg-transparent" onclick="toggleAnswer('4')" id="4">
+                    <div class="text-center"><a class="btn btn-outline-dark mt-auto" >Yana Qo'shish</a></div>
+                </div>
+                <div id="counter-4" class="counter border-top-0 mb-3"  data-product-id="4">
+                    <i class="bi bi-dash-circle-fill" id="decrement" onclick="decrement(this)"></i>
+                    <span id="count">0</span>
+                    <i class="bi bi-plus-circle-fill" id="increment"  onclick="increment(this)"></i>
+                </div>
             </div>
         </div>
     </div>
+    <div class="card-footer p-4 pt-0 border-top-0 bg-transparent" data-bs-toggle="modal" data-bs-target="#staticBackdrop">
+        <div class="text-center"><a class="btn btn-outline-dark mt-auto" >Buyurtma berish</a></div>
+    </div>
 </div>
+<!-- Modal -->
+<div class="modal fade" id="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="staticBackdropLabel">Buyurtma</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+            <form>
+                <div class="mb-3">
+                  <label for="exampleInputEmail1" class="form-label">Ismingiz</label>
+                  <input type="text" class="form-control" id="exampleInputEmail1" placeholder="Ism Familiya">
+                </div>
+                <div class="mb-3">
+                  <label for="exampleInputPassword1" class="form-label">Telefon Raqamigiz</label>
+                  <input type="text" class="form-control" id="exampleInputPassword1" placeholder="+998907697969">
+                </div>
+                <div class="mb-3">
+                    <label for="exampleInputPassword1" class="form-label">Shahar va tuman</label>
+                    <input type="text" class="form-control" id="exampleInputPassword1" placeholder="Shahar va tuman">
+                </div>
+                <div class="mb-3">
+                    <label for="exampleInputPassword1" class="form-label">Ko'cha</label>
+                    <input type="text" class="form-control" id="exampleInputPassword1" placeholder="Ko'cha">
+                </div>
+                <div class="mb-3">
+                    <label for="exampleInputPassword1" class="form-label">Mo'ljal</label>
+                    <input type="text" class="form-control" id="exampleInputPassword1" placeholder="Mo'ljal">
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                    <button type="button" class="btn btn-outline-dark mt-auto">Jo'natish</button>
+                  </div>
+              </form>
+        </div>
+      </div>
+    </div>
+  </div>
 {% endblock content %}
