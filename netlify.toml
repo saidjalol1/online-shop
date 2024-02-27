@@ -1,0 +1,2 @@
+command = "python manage.py collectstatic --noinput" 
+publish = "static/"
