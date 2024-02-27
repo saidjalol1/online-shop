@@ -83,6 +83,7 @@
 *::before,
 *::after {
   box-sizing: border-box;
+  list-style: none;
 }
 
 @media (prefers-reduced-motion: no-preference) {
@@ -4274,6 +4275,16 @@ textarea.form-control-lg {
 .card-img-top,
 .card-img-bottom {
   width: 100%;
+}
+
+.card-img-top{
+  width: 200px;
+  height: 200px;
+}
+
+.card-img-top img{
+  width: 100%;
+  height: 100%;
 }
 
 .card-img,
@@ -10853,3 +10864,51 @@ textarea.form-control-lg {
 }
 /* Count end */
 
+/* Pagination */
+
+.pagination{
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 10px;
+  margin-top: 30px;
+}
+.pagination-item{
+  display: flex;
+  align-items: center;
+  gap: 15px;
+}
+.pagination .pagination-item li a{
+  font-size: 25px;
+  padding: 10px;
+  border-radius: 10px;
+  color:  black;
+}
+.pagination .pagination-item li .active_page{
+  background: black;
+  color: #fff;
+}
+.pagination .pagination-item li a:hover,
+.pagination button a:hover{
+  background: gray;
+  color: #fff;
+}
+
+/* .pagination .prev , .next{
+  background-color: black;
+  color: white;
+  font-size: 20px;
+  border-radius: 50%;
+  width: 50px;
+  height: 50px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+} */
+/* Pagination end */
+
+.image{
+  width: 100%;
+  height: 300px;
+}

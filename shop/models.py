@@ -33,3 +33,48 @@ class CartItems(models.Model):
 
     def overall_price(self):
         return self.product.price * self.quantity
+    
+
+class WishlistItem(models.Model):
+    product = models.ForeignKey(Product, on_delete=models.CASCADE,blank=True, null=True, verbose_name="Mahsulot")
+    session_key = models.CharField(max_length=40,null=True, blank=True)
+
+
+    def overall_price(self):
+        return self.product.price
+    
+
+class ProductSold(models.Model):
+    product = models.ForeignKey(Product, on_delete=models.CASCADE,blank=True, null=True, verbose_name="Mahsulot")
+    quantity = models.PositiveBigIntegerField(default=0,verbose_name="Miqdori")
+    date_added = models.DateField(auto_now_add = True)
+
+
+    def overall_price(self):
+        return self.product.price * self.quantity
+    
+
+class Order(models.Model):
+    name = models.CharField(max_length=250, verbose_name="Mijoz Ismi va Familiyasi")
+    phone = models.CharField(max_length=10, verbose_name="Mijoz Telefon Raqami")
+    region = models.CharField(max_length=250, verbose_name="Viloyat va Tuman")
+    street = models.CharField(max_length=250, verbose_name="street")
+    target = models.CharField(max_length=250, verbose_name="Mo'ljal")
+    date_added = models.DateTimeField(auto_now_add = True)
+    payment_type = models.CharField(max_length=100, verbose_name="To'lov turi", default="Naqd")
+    payment_status = models.CharField(max_length=100, verbose_name="To'lov holati", default="Qilinmagan")
+    payment_method = models.CharField(max_length=100, default="Naqd")
+
+    def overall_price(self):
+        return sum([i.get_overall() for i in self.order_items])
+    
+
+class OrderItems(models.Model):
+    product = models.ForeignKey(Product, on_delete=models.CASCADE,blank=True, null=True, verbose_name="Mahsulot")
+    quantity = models.PositiveBigIntegerField(default=0,verbose_name="Miqdori")
+    session_key = models.CharField(max_length=40,null=True, blank=True)
+    order = models.ForeignKey(Order, on_delete=models.CASCADE,blank=True,)
+
+
+    def get_overall(self):
+        return self.product.price * self.quantity

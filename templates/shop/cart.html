@@ -1,149 +1,80 @@
 {% extends "shop-wrapper.html" %}
 
 {% block content %}
-<div class="container px-4 px-lg-5 mt-5">
-    <div class="row gx-4 gx-lg-5 row-cols-1 row-cols-md-3 row-cols-xl-4 justify-content-center">
-        <div class="col mb-5">
-            <div class="card h-100">
-                <!-- Sale badge-->
-                <div class="badge bg-dark text-white position-absolute" style="top: 0.5rem; right: 0.5rem">Sale</div>
-                <!-- Product image-->
-                <img class="card-img-top" src="https://dummyimage.com/450x300/dee2e6/6c757d.jpg" alt="..." />
-                <!-- Product details-->
-                <div class="card-body p-4">
-                    <div class="text">
-                        <!-- Product name-->
-                        <div style="display: flex;justify-content: space-between;align-items: center;width: 100%;">
-                            <div>
-                                <h5 class="fw-bolder">Special Item</h5>
-                            </div>
+<section class="py-5">
+    <div class="container px-4 px-lg-5 mt-5">
+        {% if messages %}
+            <div class="container mt-3">
+                {% for message in messages %}
+                <div class="alert alert-{{ message.tags }} alert-dismissible fade show d-flex justify-content-between align-items-center" role="alert">
+                        <div>
+                            {{ message }}
                         </div>
-                       <div class="mt-2">
-                        <span style="font-weight: bold;">Jami:</span><span style="color: red;">3000 so'm</span>
-                       </div>
-                       <div class="mt-2">
-                        <span style="font-weight: bold;">Soni:</span><span style="color: red;">30 ta</span>
-                       </div>
+                        <div>
+                            <button type="button" class="close" data-dismiss="alert" aria-label="Close" style="background-color: transparent;border: none;">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                        </div>
+                </div>
+                {% endfor %}
+            </div>
+            <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+            <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.4/dist/umd/popper.min.js"></script>
+            <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+        {% endif %}
+        {% if products %}
+        <div class="row gx-4 gx-lg-5 row-cols-1 row-cols-md-3 row-cols-xl-4 justify-content-center">
+            {% for i in products %}
+            <div class="col mb-5">
+                {% csrf_token %}
+                <div class="card h-100">
+                    <!-- Sale badge-->
+                    <div class="badge bg-dark text-white position-absolute" style="top: 0.5rem; right: 0.5rem">Sale</div>
+                    <!-- Product image-->
+                    <div class="image">
+                        <img src="{{ i.product.image.url }}" alt="Product_image" style="width: 100%;height: 100%;"/>
+                    </div>
+                    <!-- Product details-->
+                    <div class="card-body p-4">
+                        <div class="text">
+                            <!-- Product name-->
+                            <div style="display: flex;justify-content: space-between;align-items: center;width: 100%;">
+                                <div>
+                                    <h5 class="fw-bolder">{{ i.product.name }}</h5>
+                                </div>
+                            </div>
+                            <div class="mt-2">
+                                <span style="font-weight: bold;">Narxi: </span><span style="color: red;" > {{ i.product.price }} so'm</span>
+                            </div>
+                           <div class="mt-2">
+                            <span style="font-weight: bold;">Jami:</span><span style="color: red;" id="overall_price_{{ i.product_id }}"> {{ i.overall_price }} so'm</span>
+                           </div>
+                           <div class="mt-2">
+                            <span style="font-weight: bold;">Soni:</span><span style="color: red;" id="overall_quantity_{{ i.product_id }}"> {{ i.quantity }} ta</span>
+                           </div>
+                        </div>
+                    </div>
+                    <!-- Product actions-->
+                    <div class="card-footer p-4 pt-0 border-top-0 bg-transparent" onclick="toggleAnswer('{{ i.product_id }}')" id="{{ i.product_id }}">
+                        <div class="text-center"><a class="btn btn-outline-dark mt-auto" >Yana Qo'shish</a></div>
+                    </div>
+                    <div id="counter-{{ i.product_id }}" class="counter border-top-0 mb-3"  data-product-id="{{ i.product_id }}">
+                        <i class="bi bi-dash-circle-fill" id="decrement" onclick="decrement(this)"></i>
+                        <span id="count">{{ i.quantity }}</span>
+                        <i class="bi bi-plus-circle-fill" id="increment"  onclick="increment(this)"></i>
                     </div>
                 </div>
-                <!-- Product actions-->
-                <div class="card-footer p-4 pt-0 border-top-0 bg-transparent" onclick="toggleAnswer('1')" id="1">
-                    <div class="text-center"><a class="btn btn-outline-dark mt-auto" >Yana Qo'shish</a></div>
-                </div>
-                <div id="counter-1" class="counter border-top-0 mb-3"  data-product-id="1">
-                    <i class="bi bi-dash-circle-fill" id="decrement" onclick="decrement(this)"></i>
-                    <span id="count">0</span>
-                    <i class="bi bi-plus-circle-fill" id="increment"  onclick="increment(this)"></i>
-                </div>
             </div>
+            {% endfor %}
         </div>
-        <div class="col mb-5">
-            <div class="card h-100">
-                <!-- Sale badge-->
-                <div class="badge bg-dark text-white position-absolute" style="top: 0.5rem; right: 0.5rem">Sale</div>
-                <!-- Product image-->
-                <img class="card-img-top" src="https://dummyimage.com/450x300/dee2e6/6c757d.jpg" alt="..." />
-                <!-- Product details-->
-                <div class="card-body p-4">
-                    <div class="text">
-                        <!-- Product name-->
-                        <div style="display: flex;justify-content: space-between;align-items: center;width: 100%;">
-                            <div>
-                                <h5 class="fw-bolder">Special Item</h5>
-                            </div>
-                        </div>
-                       <div class="mt-2">
-                        <span style="font-weight: bold;">Jami:</span><span style="color: red;">3000 so'm</span>
-                       </div>
-                       <div class="mt-2">
-                        <span style="font-weight: bold;">Soni:</span><span style="color: red;">30 ta</span>
-                       </div>
-                    </div>
-                </div>
-                <!-- Product actions-->
-                <div class="card-footer p-4 pt-0 border-top-0 bg-transparent" onclick="toggleAnswer('2')" id="2">
-                    <div class="text-center"><a class="btn btn-outline-dark mt-auto" >Yana Qo'shish</a></div>
-                </div>
-                <div id="counter-2" class="counter border-top-0 mb-3"  data-product-id="2">
-                    <i class="bi bi-dash-circle-fill" id="decrement" onclick="decrement(this)"></i>
-                    <span id="count">0</span>
-                    <i class="bi bi-plus-circle-fill" id="increment"  onclick="increment(this)"></i>
-                </div>
-            </div>
+        <div class="card-footer p-4 pt-0 border-top-0 bg-transparent" data-bs-toggle="modal" data-bs-target="#staticBackdrop">
+            <div class="text-center"><a class="btn btn-outline-dark mt-auto" >Buyurtma berish</a></div>
         </div>
-        <div class="col mb-5">
-            <div class="card h-100">
-                <!-- Sale badge-->
-                <div class="badge bg-dark text-white position-absolute" style="top: 0.5rem; right: 0.5rem">Sale</div>
-                <!-- Product image-->
-                <img class="card-img-top" src="https://dummyimage.com/450x300/dee2e6/6c757d.jpg" alt="..." />
-                <!-- Product details-->
-                <div class="card-body p-4">
-                    <div class="text">
-                        <!-- Product name-->
-                        <div style="display: flex;justify-content: space-between;align-items: center;width: 100%;">
-                            <div>
-                                <h5 class="fw-bolder">Special Item</h5>
-                            </div>
-                        </div>
-                       <div class="mt-2">
-                        <span style="font-weight: bold;">Jami:</span><span style="color: red;">3000 so'm</span>
-                       </div>
-                       <div class="mt-2">
-                        <span style="font-weight: bold;">Soni:</span><span style="color: red;">30 ta</span>
-                       </div>
-                    </div>
-                </div>
-                <!-- Product actions-->
-                <div class="card-footer p-4 pt-0 border-top-0 bg-transparent" onclick="toggleAnswer('3')" id="3">
-                    <div class="text-center"><a class="btn btn-outline-dark mt-auto" >Yana Qo'shish</a></div>
-                </div>
-                <div id="counter-3" class="counter border-top-0 mb-3"  data-product-id="3">
-                    <i class="bi bi-dash-circle-fill" id="decrement" onclick="decrement(this)"></i>
-                    <span id="count">0</span>
-                    <i class="bi bi-plus-circle-fill" id="increment"  onclick="increment(this)"></i>
-                </div>
-            </div>
-        </div>
-        <div class="col mb-5">
-            <div class="card h-100">
-                <!-- Sale badge-->
-                <div class="badge bg-dark text-white position-absolute" style="top: 0.5rem; right: 0.5rem">Sale</div>
-                <!-- Product image-->
-                <img class="card-img-top" src="https://dummyimage.com/450x300/dee2e6/6c757d.jpg" alt="..." />
-                <!-- Product details-->
-                <div class="card-body p-4">
-                    <div class="text">
-                        <!-- Product name-->
-                        <div style="display: flex;justify-content: space-between;align-items: center;width: 100%;">
-                            <div>
-                                <h5 class="fw-bolder">Special Item</h5>
-                            </div>
-                        </div>
-                       <div class="mt-2">
-                        <span style="font-weight: bold;">Jami:</span><span style="color: red;">3000 so'm</span>
-                       </div>
-                       <div class="mt-2">
-                        <span style="font-weight: bold;">Soni:</span><span style="color: red;">30 ta</span>
-                       </div>
-                    </div>
-                </div>
-                <!-- Product actions-->
-                <div class="card-footer p-4 pt-0 border-top-0 bg-transparent" onclick="toggleAnswer('4')" id="4">
-                    <div class="text-center"><a class="btn btn-outline-dark mt-auto" >Yana Qo'shish</a></div>
-                </div>
-                <div id="counter-4" class="counter border-top-0 mb-3"  data-product-id="4">
-                    <i class="bi bi-dash-circle-fill" id="decrement" onclick="decrement(this)"></i>
-                    <span id="count">0</span>
-                    <i class="bi bi-plus-circle-fill" id="increment"  onclick="increment(this)"></i>
-                </div>
-            </div>
-        </div>
+        {% else %}
+            <p style="color: black;font-size: 50px;font-weight: 700;margin: 0 auto;text-align: center;">Ma'hsulot mavjud emas</p>
+       {% endif %}
     </div>
-    <div class="card-footer p-4 pt-0 border-top-0 bg-transparent" data-bs-toggle="modal" data-bs-target="#staticBackdrop">
-        <div class="text-center"><a class="btn btn-outline-dark mt-auto" >Buyurtma berish</a></div>
-    </div>
-</div>
+</section>
 <!-- Modal -->
 <div class="modal fade" id="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
     <div class="modal-dialog">
@@ -153,34 +84,35 @@
           <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
         </div>
         <div class="modal-body">
-            <form>
+            <form method="POST">
+                {% csrf_token %}
                 <div class="mb-3">
                   <label for="exampleInputEmail1" class="form-label">Ismingiz</label>
-                  <input type="text" class="form-control" id="exampleInputEmail1" placeholder="Ism Familiya">
+                  <input type="text" class="form-control" id="exampleInputEmail1" placeholder="Ism Familiya" name="customer_name">
                 </div>
                 <div class="mb-3">
                   <label for="exampleInputPassword1" class="form-label">Telefon Raqamigiz</label>
-                  <input type="text" class="form-control" id="exampleInputPassword1" placeholder="+998907697969">
+                  <input type="text" class="form-control" id="exampleInputPassword1" placeholder="+998907697969" name="customer_phone">
                 </div>
                 <div class="mb-3">
                     <label for="exampleInputPassword1" class="form-label">Shahar va tuman</label>
-                    <input type="text" class="form-control" id="exampleInputPassword1" placeholder="Shahar va tuman">
+                    <input type="text" class="form-control" id="exampleInputPassword1" placeholder="Shahar va tuman" name="customer_city_region">
                 </div>
                 <div class="mb-3">
                     <label for="exampleInputPassword1" class="form-label">Ko'cha</label>
-                    <input type="text" class="form-control" id="exampleInputPassword1" placeholder="Ko'cha">
+                    <input type="text" class="form-control" id="exampleInputPassword1" placeholder="Ko'cha" name="customer_street">
                 </div>
                 <div class="mb-3">
                     <label for="exampleInputPassword1" class="form-label">Mo'ljal</label>
-                    <input type="text" class="form-control" id="exampleInputPassword1" placeholder="Mo'ljal">
+                    <input type="text" class="form-control" id="exampleInputPassword1" placeholder="Mo'ljal" name="customer_target">
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                    <button type="button" class="btn btn-outline-dark mt-auto">Jo'natish</button>
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Yopish</button>
+                    <button type="submit" class="btn btn-outline-dark mt-auto" name="order">Jo'natish</button>
                   </div>
               </form>
         </div>
       </div>
     </div>
-  </div>
+</div>
 {% endblock content %}

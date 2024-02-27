@@ -11,6 +11,7 @@
         <link rel="icon" type="image/x-icon" href="{% static 'shop/assets/favicon.ico' %}" />
         <!-- Bootstrap icons-->
         <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.5.0/font/bootstrap-icons.css" rel="stylesheet" />
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js" integrity="sha512-v2CJ7UaYy4JwqLDIrZUI/4hqeoQieOmAZNXBeQyjo21dadnwR+8ZaIJVT8EE2iyI61OV8e6M8PP2/4hpQINQ/g==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
         <!-- Core theme CSS (includes Bootstrap)-->
         <link href="{% static 'shop/css/styles.css' %}" rel="stylesheet" />
 
@@ -26,14 +27,13 @@
                         <a class="btn btn-outline-dark" href="{% url 'shop:wishlist' %}">
                             <i class="bi bi-suit-heart-fill"></i>
                             Wishlist
-                            <span class="badge bg-dark text-white ms-1 rounded-pill">0</span>
+                            <span class="badge bg-dark text-white ms-1 rounded-pill" id="count_wishlist">{{ count_wishlist }}</span>
                         </a>
                         <a class="btn btn-outline-dark" href="{% url 'shop:cart' %}">
                             <i class="bi-cart-fill me-1"></i>
                             Cart
-                            <span class="badge bg-dark text-white ms-1 rounded-pill">0</span>
+                            <span class="badge bg-dark text-white ms-1 rounded-pill" id="count_cart">{{ cart_items }}</span>
                         </a>
-                       
                     </form>
                 </div>
             </div>
@@ -56,6 +56,6 @@
         <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"></script>
         <!-- Core theme JS-->
         <script src="{% static 'shop/js/scripts.js' %}"></script>
-
+        
     </body>
 </html>
