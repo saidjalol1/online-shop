@@ -7,6 +7,7 @@ admin.site.register(models.Product)
 admin.site.register(models.CartItems)
 admin.site.register(models.WishlistItem)
 admin.site.register(models.ProductSold)
+admin.site.register(models.Order)
 
 @admin.register(models.Category)
 class ProductCategoryAdmin(admin.ModelAdmin):

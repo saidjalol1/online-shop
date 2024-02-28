@@ -16,7 +16,6 @@ function increment(element){
     const overallSum = document.getElementById(`overall_price_${productId}`);
     const countQuantity = document.getElementById(`overall_quantity_${productId}`);
     let url = `/add_to_cart/${productId}`
-    console.log(url);
     const csrfToken = $('input[name=csrfmiddlewaretoken]').val();
     $.ajax({
         type: "POST",
@@ -27,14 +26,11 @@ function increment(element){
         success: function(response) {
             const countElement = element.previousElementSibling;
             countElement.innerText = parseInt(countElement.innerText, 10) + 1;
-            console.log("Product added to cart successfully");
-            console.log(countCart);
             if (response.new_added == true){
                 countCart.innerText = parseInt(countCart.innerText, 10) + 1;
             } else {
-                console.log("Updated Successfully");
                 if (overallSum && countQuantity){
-                    overallSum.innerText = parseInt(overallSum.innerText) + response.overall_sum;
+                    overallSum.innerText = parseInt(response.overall_sum);
                     countQuantity.innerText = parseInt(countQuantity.innerText, 10) + 1;
                 } else {
                     console.log("Ishlamadi");
@@ -50,10 +46,10 @@ function increment(element){
 function decrement(element){
     const productId = element.parentElement.dataset.productId;
     const countCart = document.getElementById("count_cart");
-    const overallSum = document.getElementById("overall_sum");
-    const countQuantity = document.getElementById("overall_quantity");
+    const overallSum = document.getElementById(`overall_price_${productId}`);
+    const countQuantity = document.getElementById(`overall_quantity_${productId}`);
     let url = `/remove_from_cart/${productId}`
-    console.log(url);
+
     const csrfToken = $('input[name=csrfmiddlewaretoken]').val();
     $.ajax({
         type: "POST",
@@ -65,11 +61,11 @@ function decrement(element){
             const countElement = element.nextElementSibling;
             countElement.innerText = parseInt(countElement.innerText, 10) - 1;
             if (response.removed == true){
-                countCart.innerText = parseInt(countCart.innerText, 10) - 1;
                 if (response.deleted == true) {
+                    countCart.innerText = parseInt(countCart.innerText, 10) - 1;
                     location.reload()
                 } else if(overallSum && countQuantity){
-                    overallSum.innerText = parseInt(overallSum.innerText) - response.overall_sum;
+                    overallSum.innerText = parseInt(response.overall_sum);
                     countQuantity.innerText = parseInt(countQuantity.innerText) - 1;
                 }
             } else {

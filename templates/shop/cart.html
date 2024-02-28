@@ -23,49 +23,50 @@
             <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
         {% endif %}
         {% if products %}
-        <div class="row gx-4 gx-lg-5 row-cols-1 row-cols-md-3 row-cols-xl-4 justify-content-center">
+        <div class="row d-flex justify-content-center align-items-center h-100">
+            <div class="col-10">
             {% for i in products %}
-            <div class="col mb-5">
-                {% csrf_token %}
-                <div class="card h-100">
-                    <!-- Sale badge-->
-                    <div class="badge bg-dark text-white position-absolute" style="top: 0.5rem; right: 0.5rem">Sale</div>
-                    <!-- Product image-->
-                    <div class="image">
-                        <img src="{{ i.product.image.url }}" alt="Product_image" style="width: 100%;height: 100%;"/>
+            <div class="card rounded-3 mb-4 mt-4">
+              <div class="card-body p-4">
+                <div class="row d-flex justify-content-between align-items-center pr-8">
+                  <div class="col-md-3 col-lg-3 col-xl-3 " style="height: 200px;">
+                    <img src="{{ i.product.image.url }}" class="img-fluid rounded-3" alt="{{ i.name }}" style="width: 100%;height: 100%;">
+                  </div>
+                  <div class="col-md-3 col-lg-3 col-xl-3  text-align-center-sm py-2">
+                    <div style="display: flex;justify-content: space-between;align-items: center;width: 100%;">
+                        <h5 class="fw-bolder">{{ i.product.name }}</h5>
                     </div>
-                    <!-- Product details-->
-                    <div class="card-body p-4">
-                        <div class="text">
-                            <!-- Product name-->
-                            <div style="display: flex;justify-content: space-between;align-items: center;width: 100%;">
-                                <div>
-                                    <h5 class="fw-bolder">{{ i.product.name }}</h5>
-                                </div>
-                            </div>
-                            <div class="mt-2">
-                                <span style="font-weight: bold;">Narxi: </span><span style="color: red;" > {{ i.product.price }} so'm</span>
-                            </div>
-                           <div class="mt-2">
-                            <span style="font-weight: bold;">Jami:</span><span style="color: red;" id="overall_price_{{ i.product_id }}"> {{ i.overall_price }} so'm</span>
-                           </div>
-                           <div class="mt-2">
-                            <span style="font-weight: bold;">Soni:</span><span style="color: red;" id="overall_quantity_{{ i.product_id }}"> {{ i.quantity }} ta</span>
-                           </div>
-                        </div>
+                    <div class="mt-2">
+                        <span style="font-weight: bold;">Narxi: </span><span style="color: red;" > {{ i.product.price }} so'm</span>
                     </div>
+                   <div class="mt-2">
+                    <span style="font-weight: bold;">Jami:</span><span style="color: red;" id="overall_price_{{ i.product_id }}"> {{ i.overall_price }} so'm</span>
+                   </div>
+                   <div class="mt-2">
+                    <span style="font-weight: bold;">Soni:</span><span style="color: red;" id="overall_quantity_{{ i.product_id }}"> {{ i.quantity }} ta</span>
+                   </div>
+                </div>
+                  <div class="col-md-5 col-lg-4 col-xl-4 d-flex  justify-content-center align-items-center py-2 text-center">
                     <!-- Product actions-->
                     <div class="card-footer p-4 pt-0 border-top-0 bg-transparent" onclick="toggleAnswer('{{ i.product_id }}')" id="{{ i.product_id }}">
-                        <div class="text-center"><a class="btn btn-outline-dark mt-auto" >Yana Qo'shish</a></div>
+                        <div class="text-center"><a class="btn btn-outline-dark mt-auto" >Qo'shish</a></div>
                     </div>
                     <div id="counter-{{ i.product_id }}" class="counter border-top-0 mb-3"  data-product-id="{{ i.product_id }}">
                         <i class="bi bi-dash-circle-fill" id="decrement" onclick="decrement(this)"></i>
                         <span id="count">{{ i.quantity }}</span>
                         <i class="bi bi-plus-circle-fill" id="increment"  onclick="increment(this)"></i>
                     </div>
+                    <form method="POST" style="margin-top: -25px;">
+                        {% csrf_token %}
+                        <input type="text" value="{{ i.product_id }}" style="display: none;" name="product">
+                        <button class="btn btn-outline-dark mt-auto" type="submit" name="remove">o'chirish</button>
+                    </form>
+                  </div>
                 </div>
+              </div>
             </div>
             {% endfor %}
+            </div>
         </div>
         <div class="card-footer p-4 pt-0 border-top-0 bg-transparent" data-bs-toggle="modal" data-bs-target="#staticBackdrop">
             <div class="text-center"><a class="btn btn-outline-dark mt-auto" >Buyurtma berish</a></div>

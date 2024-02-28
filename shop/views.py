@@ -1,4 +1,4 @@
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 
@@ -79,6 +79,18 @@ class WishlistPage(View):
         return render(request, self.template_name, context)
     
 
+    def post(self, request):
+        context = self.get_context_data()
+        
+        if "remove" in request.POST:
+            try:
+                wishlist = models.WishlistItem.objects.get(session_key = request.session.session_key, product_id= request.POST.get("product"))
+                wishlist.delete()
+            except ObjectDoesNotExist:
+                return redirect("shop:wishlist")
+        return render(request, self.template_name, context)
+
+
 class CartPage(View):
     template_name = "shop/cart.html"
     
@@ -99,26 +111,36 @@ class CartPage(View):
         context = self.get_context_data()
         return render(request, self.template_name, context)
     
+
     def post(self, request):
         context = self.get_context_data()
-        order = models.Order.objects.create(
-            name= request.POST.get("customer_name"),
-            phone = request.POST.get("customer_phone"),
-            region = request.POST.get("customer_city_region"),
-            street = request.POST.get("customer_street"),
-            target = request.POST.get("customer_target"),
-        )
-         
-        for i in models.CartItems.objects.filter(session_key=request.session.session_key):
-            order_items = models.OrderItems.objects.create(
-                product = i.product,
-                quantity = i.quantity,
-                session_key = i.session_key,
-                order = order
+        if "order" in request.POST:
+            order = models.Order.objects.create(
+                name= request.POST.get("customer_name"),
+                phone = request.POST.get("customer_phone"),
+                region = request.POST.get("customer_city_region"),
+                street = request.POST.get("customer_street"),
+                target = request.POST.get("customer_target"),
             )
-            i.delete()
-            print("Order Itemlar >>>>>>>>>>", order_items)
-            messages.success(request, 'Buyurtmangiz qabul qilindi')
+         
+            for i in models.CartItems.objects.filter(session_key=request.session.session_key):
+                order_items = models.OrderItems.objects.create(
+                    product = i.product,
+                    quantity = i.quantity,
+                    session_key = i.session_key,
+                    order = order
+                )
+                i.delete()
+                print("Order Itemlar >>>>>>>>>>", order_items)
+                messages.success(request, 'Buyurtmangiz qabul qilindi')
+
+
+        if "remove" in request.POST:
+            try:
+                cart_item = models.CartItems.objects.get(session_key = request.session.session_key, product_id= request.POST.get("product"))
+                cart_item.delete()
+            except ObjectDoesNotExist:
+                return redirect("shop:cart")
         return render(request, self.template_name, context)
     
 
@@ -129,6 +151,7 @@ def add_to_cart(request, product_id):
         cart_item = models.CartItems.objects.get(session_key=session_key, product__id = product.id)
         cart_item.quantity += 1
         cart_item.save()
+        print(int(cart_item.overall_price()))
         response_data = {'success': True, 'new_added': False, "overall_sum" : cart_item.overall_price()}
     except models.CartItems.DoesNotExist:
         cart_item = models.CartItems.objects.create(
@@ -165,6 +188,8 @@ def remove_from_cart(request, product_id):
         cart_item = models.CartItems.objects.get(session_key=session_key,product_id = product_id)
         cart_item.quantity -= 1
         cart_item.save()
+        overall_sum = cart_item.overall_price()
+        print(int(cart_item.overall_price()))
         if cart_item.quantity == 0:
             cart_item.delete()
         deleted = False
@@ -172,7 +197,7 @@ def remove_from_cart(request, product_id):
             deleted =  True
         else:
             pass
-        response_data = {'message': 'Product removed from cart successfully.', "deleted": deleted,"removed": True, "overall_sum" : cart_item.product.price}
+        response_data = {'message': 'Product removed from cart successfully.', "deleted": deleted,"removed": True, "overall_sum" : overall_sum}
     except models.CartItems.DoesNotExist:
         pass
         response_data = {'success': True, "removed": False}
