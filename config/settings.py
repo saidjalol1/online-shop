@@ -32,6 +32,7 @@ ALLOWED_HOSTS = []
 
 INSTALLED_APPS = [
     "shop.apps.ShopConfig",
+    "crm.apps.CrmConfig",
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
