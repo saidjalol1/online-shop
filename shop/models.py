@@ -61,19 +61,20 @@ class Order(models.Model):
     street = models.CharField(max_length=250, verbose_name="street")
     target = models.CharField(max_length=250, verbose_name="Mo'ljal")
     date_added = models.DateTimeField(auto_now_add = True)
+    status = models.CharField(max_length=100, default="Active")
     payment_type = models.CharField(max_length=100, verbose_name="To'lov turi", default="Naqd")
     payment_status = models.CharField(max_length=100, verbose_name="To'lov holati", default="Qilinmagan")
     payment_method = models.CharField(max_length=100, default="Naqd")
 
     def overall_price(self):
-        return sum([i.get_overall() for i in self.order_items])
+        return sum([i.get_overall() for i in self.order_items.all() ])
     
 
 class OrderItems(models.Model):
     product = models.ForeignKey(Product, on_delete=models.CASCADE,blank=True, null=True, verbose_name="Mahsulot")
     quantity = models.PositiveBigIntegerField(default=0,verbose_name="Miqdori")
     session_key = models.CharField(max_length=40,null=True, blank=True)
-    order = models.ForeignKey(Order, on_delete=models.CASCADE,blank=True,)
+    order = models.ForeignKey(Order, on_delete=models.CASCADE,blank=True,related_name = 'order_items')
 
 
     def get_overall(self):

@@ -6,5 +6,5 @@ app_name = "crm"
 
 urlpatterns = [
     path("", views.Statistics.as_view(), name="statistics"),
-    path("icons/", views.Icons.as_view(), name="icons"),
+    path("login/", views.Login.as_view(), name="login"),
 ]

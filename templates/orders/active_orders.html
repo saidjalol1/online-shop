@@ -1,0 +1,46 @@
+{% extends "admin_wrapper.html" %}
+{% block content %}
+<div class="row">
+    <div class="col-lg-12 grid-margin stretch-card">
+      <div class="card">
+        <div class="card-body">
+          <h4 class="card-title">{{ status }} Buyurtmalar</h4>
+          <p class="card-description">Xizmat ko'rsatilmagan Buyurtmalar<code></code></p>
+          <div>
+            <form action="" method="POST" style="display: flex;align-items: center;gap: 10px;">
+              {% csrf_token %}
+              <button type="submit" class="btn btn-success" name="active">Active Buyurtmalar</button>
+              <button type="submit" class="btn btn-success" name="unactive">NoActive Buyurtmalar</button>
+            </form>
+          </div>
+          <div class="table-responsive">
+            <table class="table table-hover">
+              <thead>
+                <tr>
+                  <th>Ism Familiya</th>
+                  <th>Sanasi</th>
+                  <th>Mijoz Telefon raqami</th>
+                  <th>Holati</th>
+                </tr>
+              </thead>
+              <tbody>
+                {% if orders %}
+                {% for i in orders %}
+                <tr>
+                  <td><a href="{% url 'orders:detail' i.id %}">{{ i.name }}</a></td>
+                  <td><a href="{% url 'orders:detail' i.id %}">{{ i.date_added }}</a></td>
+                  <td><a href="{% url 'orders:detail' i.id %}">{{ i.phone }}</a></td>
+                  <td><label class="badge badge-danger">{{ i.status }}</label></td>
+                </tr>
+                {% endfor %}
+                {% else %}
+                <tr> Bu turdagi Buyurtmalar mavjud emas </tr>
+                {% endif %}
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+{% endblock content %}

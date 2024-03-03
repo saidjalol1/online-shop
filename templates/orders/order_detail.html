@@ -1,0 +1,46 @@
+{% extends "admin_wrapper.html" %}
+{% block content %}
+<div class="row">
+    <div class="col-lg-12 grid-margin stretch-card">
+      <div class="card">
+        <div class="card-body">
+          <h4 class="card-title">{{ item.id }} - buyurtma</h4>
+          <p class="card-description">
+              <p>Address - {{ item.region }}, {{ item.street }}, {{ item.target }}</p>
+              <p>Jami:  <span style="color: red; margin-left: 20px;">{{ item.overall_price }} so'm</span></p>
+          </p>
+          <div>
+            <form action="" method="POST" style="display: flex;align-items: center;gap: 10px;">
+              {% csrf_token %}
+              <button type="submit" class="btn btn-success" name="print">Chop etish</button>
+            </form>
+          </div>
+          <div class="table-responsive">
+            <table class="table table-hover">
+              <thead>
+                <tr>
+                  <th>Rasmi</th>
+                  <th>Narxi</th>
+                  <th>Soni</th>
+                  <th>Summasi</th>
+                </tr>
+              </thead>
+              <tbody>
+                {% for i in item.order_items.all %}
+                <tr>
+                  <td style="width: 200px;height: 200px;">
+                    <img src="{{ i.product.image.url }}" alt="Product_img" style="width: 100%;height: 100%;border-radius: 10px;">
+                  </td>
+                  <td class="text-danger"> {{ i.product.price }}</td>
+                  <td><label class="badge badge-danger">{{ i.quantity }}</label></td>
+                  <td>{{ i.get_overall }}</td>
+                </tr>
+                {% endfor %}
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+{% endblock content %}

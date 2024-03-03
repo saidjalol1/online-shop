@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Print Order</title>
+</head>
+<body>
+    <h1>{{ item.id }} - buyurtma</h1>
+    <p>Address - {{ item.region }}, {{ item.street }}, {{ item.target }}</p>
+    <p>Jami: <span style="color: red; margin-left: 20px;">{{ item.overall_price }} so'm</span></p>
+    
+    <table>
+        <thead>
+            <tr>
+                <th>Narxi</th>
+                <th>Soni</th>
+                <th>Summasi</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for i in item.order_items.all %}
+            <tr>
+                <td class="text-danger"> {{ i.product.price }}</td>
+                <td><label class="badge badge-danger">{{ i.quantity }}</label></td>
+                <td>{{ i.get_overall }}</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+
+    <script>
+        // JavaScript code to trigger the print dialog
+        window.onload = function() {
+            window.print();
+        }
+    </script>
+</body>
+</html>
