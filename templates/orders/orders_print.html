@@ -1,35 +1,73 @@
 <!DOCTYPE html>
-<html lang="en">
+{% load static %}
+<html>
 <head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Print Order</title>
+    <title>Order Details</title>
+    <style>
+        table{
+            width: 100%;
+            border: 1px solid black;
+            margin-top: 20px;
+        }
+        thead{
+            border: 3px solid black;
+        }
+        tbody{
+            border: 1px solid black;
+        }
+        th{
+            border:  transparent;
+            border-left: 2px solid black;
+            border-bottom: 2px solid black;
+        }
+        td{
+            border: transparent;
+            border-left:  1px solid black;
+            border-bottom: 1px solid black;
+            text-align: center;
+        }
+    </style>
 </head>
 <body>
-    <h1>{{ item.id }} - buyurtma</h1>
-    <p>Address - {{ item.region }}, {{ item.street }}, {{ item.target }}</p>
-    <p>Jami: <span style="color: red; margin-left: 20px;">{{ item.overall_price }} so'm</span></p>
-    
-    <table>
-        <thead>
-            <tr>
-                <th>Narxi</th>
-                <th>Soni</th>
-                <th>Summasi</th>
-            </tr>
-        </thead>
-        <tbody>
-            {% for i in item.order_items.all %}
-            <tr>
-                <td class="text-danger"> {{ i.product.price }}</td>
-                <td><label class="badge badge-danger">{{ i.quantity }}</label></td>
-                <td>{{ i.get_overall }}</td>
-            </tr>
-            {% endfor %}
-        </tbody>
-    </table>
-
+    <section>
+        <div style="text-align: left;">
+            <h1>0{{ item.id }} - raqamli buyurtma</h1>
+            <hr>
+            <div style="font-weight: bold;font-size: 30px;">Manzil:</div>
+            <p><span style="font-weight: bold;">Ko'cha Nomi</span> - {{ item.street }}, </p>
+            <p><span style="font-weight: bold;">Shahar/Tuman</span> - {{ item.region }}</p>
+            <p><span style="font-weight: bold;">Mo'ljal</span> - {{ item.target }}</p>
+        </div>
+        <hr>
+    </section>
+    <section>  
+        <h3>Mahsulotlar:</h3>
+        <table>
+            <thead>
+                <tr>
+                    <th>Rasmi</th>
+                    <th>Nomi</th>
+                    <th>Narxi</th>
+                    <th>Soni</th>
+                    <th>Jami summasi</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for i in item.order_items.all %}
+                <tr>
+                    <td style="text-align: center;">
+                        <img src="{{ i.product.image.url }}" style="width: 70px;height: 100px;" alt="">
+                    </td>
+                    <td>{{ i.product.name }}</td>
+                    <td class="text-danger"> {{ i.product.price }}</td>
+                    <td><label class="badge badge-danger">{{ i.quantity }}</label></td>
+                    <td>{{ i.get_overall }} so'm</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+        <div style="margin-top: 10px;"><span style="font-weight: bold;">Jami Summasi</span> - <span style="color: red; margin-left: 20px;">{{ item.overall_price }} so'm</span></div>
+    </section>
     <script>
         // JavaScript code to trigger the print dialog
         window.onload = function() {

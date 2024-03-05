@@ -1,0 +1,53 @@
+{% extends "admin_wrapper.html" %}
+{% block content %}
+<div class="row">
+    <div class="col-lg-12 grid-margin stretch-card">
+      <div class="card">
+        <div class="card-body">
+          <h4 class="card-title">{{ status }} Buyurtmalar</h4>
+          <p class="card-description">Nasiya Buyurtmalar<code></code></p>
+          <div class="table-responsive">
+            <table class="table table-hover" style="overflow: visible;">
+              <thead>
+                <tr>
+                  <th>Ism Familiya</th>
+                  <th>Sanasi</th>
+                  <th>Mijoz Telefon raqami</th>
+                  <th>To'lov turi</th>
+                  <th>Holati</th>
+                  <th>Oxirgi muddat</th>
+                  <th>Oxirgi sanani kiriting</th>
+                </tr>
+              </thead>
+              <tbody>
+                {% if orders %}
+                {% for i in orders %}
+                <tr>
+                  <td><a href="{% url 'orders:detail' i.id %}">{{ i.name }}</a></td>
+                  <td><a href="{% url 'orders:detail' i.id %}">{{ i.date_added }}</a></td>
+                  <td><a href="{% url 'orders:detail' i.id %}">{{ i.phone }}</a></td>
+                  <td>{{ i.payment_type }}</td>
+                  <td><label class="badge badge-danger">{{ i.status }}</label></td>
+                  <td>{{ i.payment_deadline }}</td>
+                  <td>
+                    <form method="POST">
+                        {% csrf_token %}
+                        <input type="hidden" name="order" value="{{ i.id }}">
+                        <input type="date" name="deadline" style="border-radius: 10px;padding: 6px 3px;">
+                        <button type="submit" class="btn btn-success" name="mark_deadline">ok</button>
+                    </form>
+                  </td>
+                </tr>
+                {% endfor %}
+                {% else %}
+                <tr> Bu turdagi Buyurtmalar mavjud emas </tr>
+                {% endif %}
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+{% endblock content %}

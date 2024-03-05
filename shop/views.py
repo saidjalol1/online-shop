@@ -1,3 +1,5 @@
+import random
+import string
 from django.shortcuts import render, redirect
 
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
@@ -10,6 +12,14 @@ from django.views.generic import View
 
 from . import models
 
+# Bar code for Orders
+from django.shortcuts import render
+from django.http import HttpResponse
+from barcode import Code128
+from barcode.writer import ImageWriter
+
+from .models import Barcode
+from .utils import generate_barcode_data, generate_barcode_image 
 
 
 class MainPage(View):
@@ -116,24 +126,33 @@ class CartPage(View):
         context = self.get_context_data()
         if "order" in request.POST:
             order = models.Order.objects.create(
-                name= request.POST.get("customer_name"),
-                phone = request.POST.get("customer_phone"),
-                region = request.POST.get("customer_city_region"),
-                street = request.POST.get("customer_street"),
-                target = request.POST.get("customer_target"),
+                name=request.POST.get("customer_name"),
+                phone=request.POST.get("customer_phone"),
+                region=request.POST.get("customer_city_region"),
+                street=request.POST.get("customer_street"),
+                target=request.POST.get("customer_target"),
             )
-         
-            for i in models.CartItems.objects.filter(session_key=request.session.session_key):
-                order_items = models.OrderItems.objects.create(
-                    product = i.product,
-                    quantity = i.quantity,
-                    session_key = i.session_key,
-                    order = order
-                )
-                i.delete()
-                print("Order Itemlar >>>>>>>>>>", order_items)
-                messages.success(request, 'Buyurtmangiz qabul qilindi')
+            # Create a new Barcode object associated with the order
+            barcode_data = generate_barcode_data()  # Generate barcode data
+            barcode = Barcode.objects.create(order=order, barcode_data=barcode_data)
 
+            # Generate the barcode image and save it
+            barcode_image_path = generate_barcode_image(barcode_data, order.id)  # Generate barcode image
+            order.barcode_image = barcode_image_path  # Save the barcode image path to the Order object
+            order.save()  # Save the Order object
+            
+            for cart_item in models.CartItems.objects.filter(session_key=request.session.session_key):
+                order_item = models.OrderItems.objects.create(
+                    product=cart_item.product,
+                    quantity=cart_item.quantity,
+                    session_key=cart_item.session_key,
+                    order=order
+                )
+                cart_item.delete()
+                print("Order Itemlar >>>>>>>>>>", order_item)
+        
+            messages.success(request, 'Buyurtmangiz qabul qilindi')
+            
 
         if "remove" in request.POST:
             try:

@@ -1,5 +1,5 @@
 from django.db import models
-
+from crm.models import CustomUser
 
 class Category(models.Model):
     name = models.CharField(max_length=100, verbose_name="Nomi")
@@ -56,7 +56,7 @@ class ProductSold(models.Model):
 
 class Order(models.Model):
     name = models.CharField(max_length=250, verbose_name="Mijoz Ismi va Familiyasi")
-    phone = models.CharField(max_length=10, verbose_name="Mijoz Telefon Raqami")
+    phone = models.CharField(max_length=20, verbose_name="Mijoz Telefon Raqami")
     region = models.CharField(max_length=250, verbose_name="Viloyat va Tuman")
     street = models.CharField(max_length=250, verbose_name="street")
     target = models.CharField(max_length=250, verbose_name="Mo'ljal")
@@ -65,6 +65,10 @@ class Order(models.Model):
     payment_type = models.CharField(max_length=100, verbose_name="To'lov turi", default="Naqd")
     payment_status = models.CharField(max_length=100, verbose_name="To'lov holati", default="Qilinmagan")
     payment_method = models.CharField(max_length=100, default="Naqd")
+    payment_deadline = models.DateField(blank=True, null=True)
+    deliver = models.ForeignKey(CustomUser, related_name = "orders", blank=True, null=True, on_delete=models.CASCADE)
+    barcode_image = models.ImageField(upload_to='barcodes/', null=True, blank=True)
+
 
     def overall_price(self):
         return sum([i.get_overall() for i in self.order_items.all() ])
@@ -79,3 +83,9 @@ class OrderItems(models.Model):
 
     def get_overall(self):
         return self.product.price * self.quantity
+    
+
+class Barcode(models.Model):
+    order = models.OneToOneField(Order, on_delete=models.CASCADE)
+    name = models.CharField(max_length=100, blank=True, null=True)
+    barcode_data = models.CharField(max_length=100, null=True, blank=True)

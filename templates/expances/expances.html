@@ -1,0 +1,82 @@
+{% extends "admin_wrapper.html" %}
+{% block content %}
+<div class="row">
+    <div class="col-lg-12 grid-margin stretch-card">
+      <div class="card">
+        <div class="card-body">
+          <h3 class="card-title">Sana bo'yicha Saralash</h3>
+          <div style="display: flex;column-gap: 10px;">
+            <form  method="POST" style="display: flex;align-items: center;gap: 10px;">
+              {% csrf_token %}
+              <input type="date" class="form-control" name="date" style="padding: 0 5px;">
+              <button type="submit" class="btn btn-success" name="date_filter">saralash</button>
+            </form>
+          </div>
+          <div style="margin-top: 20px;"> 
+            <h3>Chiqim Qo'shish</h3>
+            <form method="POST" style="width: 100%;display: flex;column-gap: 10px; margin-top: 10px;">
+                {% csrf_token %}
+                <div>
+                    <input type="text" class="form-control" name="name" placeholder="Nomi">
+                </div>
+                <div>
+                    <input type="text" class="form-control" name="amount" placeholder="Qiymati">
+                </div>
+                <div>
+                    <input type="text" class="form-control" name="description" placeholder="Tavsifi">
+                </div>
+                <button type="submit" class="btn bg-danger" name="create">Qo'shish</button>
+            </form>
+          </div>
+          <div class="table-responsive" style="margin-top: 10px;">
+            <table class="table table-hover" style="overflow: visible;">
+              <thead>
+                <tr>
+                  <th>Nomi</th>
+                  <th>Sanasi</th>
+                  <th>Qiymati</th>
+                  <th>Tavsifi</th>
+                  <th>Amaliyotlar</th>
+                </tr>
+              </thead>
+              {% if expances %}
+              <tbody>
+                {% for i in expances %}
+                <tr>
+                  <td><a href="{% url 'orders:detail' i.id %}">{{ i.name }}</a></td>
+                  <td><a href="{% url 'orders:detail' i.id %}">{{ i.date_added }}</a></td>
+                  <td><a href="{% url 'orders:detail' i.id %}">{{ i.amount }}</a></td>
+                  <td>{{ i.description }}</td>
+                  <td>
+                    <form method="POST">
+                        {% csrf_token %}
+                        <input type="hidden" name="expance" value="{{ i.id }}">
+                        <button type="submit" name="delete" class="btn bg-danger">O'chirish</button>
+                    </form>
+                  </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+            {% else %}
+            <p style="margin-top: 20px;text-align: center;font-size: 30px;"> Bu Sanada Chiqimlar mavjud emas </p>
+            {% endif %}
+            </table>
+          </div>
+        </div>
+      </div>
+    </div>
+</div>  
+{% endblock content %}
+<!-- <form method="POST" style="width: 100%;">
+    {% csrf_token %}
+    <div>
+        <input type="text" name="name" placeholder="Nomi">
+    </div>
+    <div>
+        <input type="text" name="amount" placeholder="Qiymati">
+    </div>
+    <div>
+        <input type="text" name="description" placeholder="Tavsifi">
+    </div>
+    <button type="submit" name="create">Qo'shish</button>
+</form> -->
