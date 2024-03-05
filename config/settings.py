@@ -34,6 +34,7 @@ INSTALLED_APPS = [
     "shop.apps.ShopConfig",
     "crm.apps.CrmConfig",
     "expances.apps.ExpancesConfig",
+    "workers.apps.WorkersConfig",
     "orders.apps.OrdersConfig",
     'django.contrib.admin',
     'django.contrib.auth',
