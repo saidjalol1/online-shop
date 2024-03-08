@@ -55,7 +55,6 @@ seller_required = user_passes_test(is_seller, login_url=None, redirect_field_nam
 class Orders(View):
     template_name = "orders/active_orders.html"
 
-
     def get_context_data(self, *kwargs):
         context = {}
         orders = models.Order.objects.all()
@@ -71,12 +70,10 @@ class Orders(View):
         })
         return context 
     
-
     def get(self, request):
         context = self.get_context_data()
         return render(request, self.template_name, context)
     
-
     def post(self, request):
         context = self.get_context_data()
 
@@ -139,12 +136,10 @@ class OrdersDetail(View):
             })
         return context
     
-
     def get(self, request, **kwargs):
         context = self.get_context_data()
         return render(request,self.template_name, context)
     
-
     def post(self, request, **kwargs):
         context = self.get_context_data()
         if "pdf" in request.POST:
@@ -166,7 +161,6 @@ class OrderDebt(View):
         context = self.get_context_data()
         return render(request, self.template_name, context)
     
-
     def post(self, request):
         context = self.get_context_data()
         if "mark_deadline" in request.POST:
@@ -175,6 +169,7 @@ class OrderDebt(View):
             order.save()
 
         return render(request, self.template_name, context)
+    
 
 def print_order(request, pk):
     item = models.Order.objects.get(id=pk)
