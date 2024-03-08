@@ -132,14 +132,13 @@ class CartPage(View):
                 street=request.POST.get("customer_street"),
                 target=request.POST.get("customer_target"),
             )
-            # Create a new Barcode object associated with the order
-            barcode_data = generate_barcode_data()  # Generate barcode data
+            barcode_data = generate_barcode_data()  
             barcode = Barcode.objects.create(order=order, barcode_data=barcode_data)
 
-            # Generate the barcode image and save it
-            barcode_image_path = generate_barcode_image(barcode_data, order.id)  # Generate barcode image
-            order.barcode_image = barcode_image_path  # Save the barcode image path to the Order object
-            order.save()  # Save the Order object
+            
+            barcode_image_path = generate_barcode_image(barcode_data, order.id) 
+            order.barcode_image = barcode_image_path  
+            order.save()  
             
             for cart_item in models.CartItems.objects.filter(session_key=request.session.session_key):
                 order_item = models.OrderItems.objects.create(

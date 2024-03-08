@@ -2,7 +2,22 @@ from django.shortcuts import render, redirect
 
 from django.views import View
 from . import models
+# Decorators
+from django.contrib.auth.decorators import login_required
+from django.utils.decorators import method_decorator
+from django.contrib.auth.decorators import user_passes_test
 
+
+def is_superuser(user):
+    if user.is_authenticated:
+        return user.is_superuser
+    return False
+
+superuser_required = user_passes_test(is_superuser, login_url=None, redirect_field_name=None)
+
+
+
+@method_decorator(superuser_required, name='dispatch')
 class Expances(View):
     template_name = "expances/expances.html"
 

@@ -1,0 +1,128 @@
+{% extends 'admin_wrapper.html' %}
+{% block content %}
+<div class="row">
+    <div class="col-lg-12 grid-margin stretch-card">
+      <div class="card">
+        <div class="card-body">
+            <div style="margin-top: 20px;"> 
+                <h3>Mahsulot Qo'shish</h3>
+                <form method="POST" enctype="multipart/form-data"  style="width: 100%;display: flex;column-gap: 10px; margin-top: 10px;">
+                    {% csrf_token %}
+                    <div>
+                        <input type="text" class="form-control" name="name" placeholder="Nomi" required>
+                    </div>
+                    <div>
+                        <input type="text" class="form-control" name="amount" placeholder="Soni" required>
+                    </div>
+                    <div>
+                        <input type="number" class="form-control" name="price" placeholder="Narxi" required>
+                    </div>
+                    <div>
+                        <input type="text" class="form-control" name="description" placeholder="Tavsifi" required>
+                    </div>
+                    <div>
+                        <select name="category" class="form-control" required>
+                            <option disabled selected>Kategoriyasi</option>
+                            {% for i in category %}
+                            <option value="{{ i.id }}">{{ i.name }}</option>
+                            {% endfor %}
+                        </select>
+                    </div>
+                    <div>
+                        <input type="file" name="image" required class="form-control">
+                    </div>
+                    <button type="submit" class="btn bg-danger" name="create">Qo'shish</button>
+                </form>
+              </div>
+          <div class="table-responsive">
+            <table class="table table-hover" style="overflow: visible;">
+              <thead>
+                <tr>
+                  <th>Rasmi</th>
+                  <th>Nomi</th>
+                  <th>Narxi</th>
+                  <th>Ombordagi Soni</th>
+                  <th>Tavsifi</th>
+                  <th>Sotilgan Soni</th>
+                  <th>Kategoriyasi</th>
+                  <th>Sotuvga qo'shish</th>
+                </tr>
+              </thead>
+              <tbody>
+                {% for i in products %}
+                <tr>
+                  <td>
+                    <img src="{{ i.image.url }}" alt="ProductImage" style="border-radius: 0;width: 100px;height: 150px;">
+                  </td>
+                  <td>{{ i.name }}</td>
+                  <td>{{ i.price }}</td>
+                  <td>{{ i.amount }}</td>
+                  <td>{{ i.description }}</td>
+                  <td>{{ i.sold_amount }}</td>
+                  <td>{{ i.category }}</td>
+                  <td>
+                    <form method="POST" style="display: flex;">
+                      {% csrf_token %}
+                      <input type="hidden" name="product" value="{{ i.id }}">
+                      <input type="number" name="quantity" class="form-control" style="width: 100px;" placeholder="soni">
+                      <button type="submit" class="btn btn-success" name="add">Qo'shish</button>
+                    </form>
+                  </td>
+                </tr>
+                {% endfor %}
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+<div class="row">
+    <div class="col-md-12 col-xl-4 grid-margin stretch-card">
+        <div class="card">
+          <div class="card-body">
+            <h4 class="card-title">Kerakli Mahsulotlar Ro'yxatga Qo'shish</h4>
+            <form class="add-items d-flex" method="POST">
+                    {% csrf_token %}
+                    <input type="text" class="form-control todo-list-input" placeholder="Mahsulot nomi" name="name">
+                    <button type="submit" class="btn btn-primary" name="add_essential_product">Qo'shish</button>
+            </form>
+            <div class="list-wrapper">
+              <ul class="d-flex flex-column-reverse text-white todo-list todo-list-custom">
+                {% if essential %}
+                    {% for i in essential %}
+                    <li>
+                    <form method="POST" style="display: flex;justify-content: space-between;align-items: center;width: 100%;">
+                        {% csrf_token %}
+                        <div class="form-check form-check-primary">
+                          <label class="form-check-label">
+                                <input type="hidden" name="product_id" value="{{ i.id }}">
+                                {{ i.name }}
+                            </label>
+                        </div>
+                        <button style="background-color: transparent;border: none;" type="submit" name="delete_essential_product"><i class="mdi mdi-close-box" style="color: white;"></i></button>
+                    </form>
+                    </li>
+                    {% endfor %}
+                {% else %}
+                <h4 style="text-align: center;">Ma'lumot mavjud emas</h4>
+                {% endif %}
+              </ul>
+            </div>
+          </div>
+        </div>
+    </div>
+    <div class="col-md-12 col-xl-4 grid-margin stretch-card">
+        <div class="card">
+          <div class="card-body">
+            <h4 class="card-title">Mahsulot Kategoriyasini qo'shish</h4>
+            <form class="add-items d-flex" method="POST">
+                    {% csrf_token %}
+                    <input type="text" class="form-control todo-list-input" placeholder="Kategoriya nomi" name="category_name">
+                    <button type="submit" class="btn btn-primary" name="category_add">Qo'shish</button>
+            </form>
+          </div>
+        </div>
+      </div>
+</div>
+{% endblock content %}

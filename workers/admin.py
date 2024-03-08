@@ -3,7 +3,7 @@ from django.contrib import admin
 from . import models
 
 
-@admin.register
+@admin.register(models.Positions)
 class PositonAdmin(admin.ModelAdmin):
     prepopulated_fields = {'slug': ('name',)}
 

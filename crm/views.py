@@ -1,7 +1,7 @@
+from datetime import datetime, date
 from django.shortcuts import render, redirect
 from django.urls import reverse_lazy
 from django.views import View
-
 # Decorators
 from django.contrib.auth.decorators import login_required
 from django.utils.decorators import method_decorator
@@ -14,7 +14,14 @@ from django.contrib.auth.hashers import make_password
 from django.contrib.auth.forms import UserCreationForm
 from .forms import CustomUserCreationForm
 
-
+from .utils import(
+                    most_sold_product, 
+                    most_buy_customer,
+                    debt_sale,
+                    cash_sale,
+                    expances,
+                )
+from shop.models import Product, OrderItems
 def is_seller(user):
     if user.is_authenticated:
         return user.is_seller
@@ -37,7 +44,37 @@ class Statistics(View):
 
 
     def get_context_data(self, *kwargs):
-        context = {}
+        product_id = most_sold_product()
+        customer = most_buy_customer()
+        debt = debt_sale()
+        cash = cash_sale()
+        expance = expances()
+        sale = debt + cash
+        if expance is None:
+            expance = "Ma'lumot mavjud emas"
+        if sale is None:
+            sale = "Ma'lumot mavjud emas"
+        if cash is None:
+            cash = "Ma'lumot mavjud emas"
+        if debt is None:
+            debt = "Ma'lumot mavjud emas"
+        if customer is None:
+            cutomer = "Ma'lumot mavjud emas"
+        try:
+            product = Product.objects.get(id=product_id)
+        except:
+            product = "Ma'lumot mavjud emas"
+        
+        context = {
+            "most_sold_product": product,
+            "most_buy_customer": customer,
+            "debt": debt,
+            "cash": cash,
+            "expances": expance,
+            "expance": expance,
+            "sale": sale
+
+        }
         return context
     
 
@@ -48,6 +85,32 @@ class Statistics(View):
 
     def post(self, reqeust):
         context = self.get_context_data()
+        if "filter_date" in reqeust.POST:
+            start_date_str = reqeust.POST.get("start_date")
+            end_date_str = reqeust.POST.get("end_date")
+            start_date = datetime.strptime(start_date_str, '%Y-%m-%d').date()
+            end_date = datetime.strptime(end_date_str, '%Y-%m-%d').date()
+            product_id  = most_sold_product(start_date, end_date)
+            most_buy = most_buy_customer(start_date, end_date)
+            debt = debt_sale(start_date, end_date)
+            cash = cash_sale(start_date, end_date)
+            expance = expances(start_date, end_date)
+            if cash is None:
+                cash = "Ma'lumot mavjud emas"
+            if debt is None:
+                debt = "Ma'lumot mavjud emas"
+            if most_buy is None:
+                most_buy = "Ma'lumot mavjud emas"
+            try:
+                product = Product.objects.get(id=product_id)
+            except:
+                product = "Ma'lumot mavjud emas"
+
+            context["most_sold_product"] = product
+            context["most_buy_customer"] = most_buy
+            context["debt"] = debt
+            context["cash"] = cash
+            context["expances"] = expance
         return render(reqeust, self.template_name, context)
     
 

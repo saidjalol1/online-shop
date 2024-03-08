@@ -1,9 +1,11 @@
 from django.db import models
 from crm.models import CustomUser
 
+
+
 class Category(models.Model):
     name = models.CharField(max_length=100, verbose_name="Nomi")
-    slug = models.SlugField(max_length=40,unique=True)
+    slug = models.SlugField(max_length=40,unique=True, blank=True)
     
 
     def __str__(self):
@@ -14,6 +16,7 @@ class Product(models.Model):
     name = models.CharField(max_length=100, verbose_name="Nomi")
     image = models.ImageField(upload_to="mahsulotlar/",null=True)
     amount = models.CharField(max_length=100, verbose_name="Miqdori")
+    sold_amount = models.PositiveIntegerField(default=0)
     price = models.PositiveBigIntegerField(default=0, verbose_name="Narxi")
     description = models.CharField(max_length=300, verbose_name="Tavsifi")
     discount = models.PositiveIntegerField(default=0)
@@ -22,7 +25,7 @@ class Product(models.Model):
 
 
     def __str__(self):
-        return str(self.name + " " + self.category.name)
+        return self.name
     
 
 class CartItems(models.Model):
@@ -89,3 +92,9 @@ class Barcode(models.Model):
     order = models.OneToOneField(Order, on_delete=models.CASCADE)
     name = models.CharField(max_length=100, blank=True, null=True)
     barcode_data = models.CharField(max_length=100, null=True, blank=True)
+
+
+class Notification(models.Model):
+    message = models.TextField()
+    order = models.ForeignKey(Order, on_delete=models.CASCADE, blank=True, null=True, related_name = "notifications")
+    created_at = models.DateTimeField(auto_now_add=True)

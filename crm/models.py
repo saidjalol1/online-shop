@@ -1,7 +1,6 @@
 from django.db import models
 from django.contrib.auth.models import AbstractUser
 
-
 class CustomUser(AbstractUser):
     is_seller = models.BooleanField(default=False)
     is_deliver = models.BooleanField(default=False)
@@ -9,3 +8,5 @@ class CustomUser(AbstractUser):
     
     def __str__(self):
         return self.username
+    
+

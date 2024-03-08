@@ -9,8 +9,10 @@ urlpatterns = [
     path("", include("shop.urls", namespace="shop")),
     path("crm/", include("crm.urls", namespace="crm")),
     path("crm/orders/", include("orders.urls", namespace="orders")),
-    path("expances/", include("expances.urls", namespace="expances")),
-    path("workers/", include("workers.urls", namespace="workers")),
+    path("crm/expances/", include("expances.urls", namespace="expances")),
+    path("crm/workers/", include("workers.urls", namespace="workers")),
+    path("crm/warehouse/", include("warehouse.urls", namespace="warehouse")),
+    path("crm/sale",include("sale.urls", namespace="sale")),
 ]
 
 

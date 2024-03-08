@@ -9,11 +9,20 @@
             <form  method="POST" style="display: flex;align-items: center;gap: 10px;">
               {% csrf_token %}
               <select name="worker" class="form-control">
-                    {% for i in position %}
+                    <option disabled selected>Lavozimlar</option>
+                    {% for i in positions %}
                         <option value="{{ i.id }}">{{ i.name }}</option>
                     {% endfor %}
               </select>
               <button type="submit" class="btn btn-success" name="position_filter">saralash</button>
+            </form>
+          </div>
+          <h3 style="margin-top: 20px;">Lavozim Qo'shish</h3>
+          <div style="display: flex;column-gap: 10px;">
+            <form  method="POST" style="display: flex;align-items: center;gap: 10px;">
+              {% csrf_token %}
+              <input type="text" name="name" placeholder="Lavozim nomi" class="form-control">
+              <button type="submit" class="btn btn-success" name="position_add">Qo'shsih</button>
             </form>
           </div>
           <div style="margin-top: 20px;"> 
@@ -30,11 +39,12 @@
                     <input type="text" class="form-control" name="salary" placeholder="salary">
                 </div>
                 <div>
-                    <input type="text" class="form-control" name="text" placeholder="phone">
+                    <input type="text" class="form-control" name="phone" placeholder="phone">
                 </div>
                 <div>
                     <select name="worker" class="form-control">
-                        {% for i in position %}
+                      <option value="" selected>Lavozimlar</option>
+                        {% for i in positions %}
                             <option value="{{ i.id }}">{{ i.name }}</option>
                         {% endfor %}
                     </select>
@@ -46,25 +56,25 @@
             <table class="table table-hover" style="overflow: visible;">
               <thead>
                 <tr>
-                  <th>Nomi</th>
-                  <th>Sanasi</th>
-                  <th>Qiymati</th>
-                  <th>Tavsifi</th>
-                  <th>Amaliyotlar</th>
+                  <th>Ismi</th>
+                  <th>Familiyasi</th>
+                  <th>Telefoni</th>
+                  <th>Lavozimi</th>
+                  <th>Maoshi</th>
                 </tr>
               </thead>
-              {% if expances %}
+              {% if workers %}
               <tbody>
-                {% for i in expances %}
+                {% for i in workers %}
                 <tr>
-                  <td><a href="{% url 'orders:detail' i.id %}">{{ i.name }}</a></td>
-                  <td><a href="{% url 'orders:detail' i.id %}">{{ i.date_added }}</a></td>
-                  <td><a href="{% url 'orders:detail' i.id %}">{{ i.amount }}</a></td>
-                  <td>{{ i.description }}</td>
+                  <td>{{ i.name }}</td>
+                  <td>{{ i.surname }}</td>
+                  <td>{{ i.phone }}</td>
+                  <td>{{ i.salary }}</td>
                   <td>
                     <form method="POST">
                         {% csrf_token %}
-                        <input type="hidden" name="expance" value="{{ i.id }}">
+                        <input type="hidden" name="worker" value="{{ i.id }}">
                         <button type="submit" name="delete" class="btn bg-danger">O'chirish</button>
                     </form>
                   </td>
@@ -72,7 +82,7 @@
                 {% endfor %}
             </tbody>
             {% else %}
-            <p style="margin-top: 20px;text-align: center;font-size: 30px;"> Bu Sanada Chiqimlar mavjud emas </p>
+            <p style="margin-top: 20px;text-align: center;font-size: 30px;"> Bu Lavozimda Xodimlar mavjud emas </p>
             {% endif %}
             </table>
           </div>

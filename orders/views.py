@@ -3,7 +3,7 @@ from django.shortcuts import render
 from django.views import View
 from shop import models
 from crm.models import CustomUser
-from shop.models import Barcode
+from shop.models import Barcode, Notification
 # Decorators
 from django.contrib.auth.decorators import login_required
 from django.utils.decorators import method_decorator
@@ -51,15 +51,22 @@ superuser_required = user_passes_test(is_superuser, login_url=None, redirect_fie
 seller_required = user_passes_test(is_seller, login_url=None, redirect_field_name=None)
 
 
-@method_decorator(seller_required, name='dispatch')
+@method_decorator(login_required, name='dispatch')
 class Orders(View):
     template_name = "orders/active_orders.html"
 
 
     def get_context_data(self, *kwargs):
         context = {}
+        orders = models.Order.objects.all()
+        for i in orders:
+            try:
+                notify = Notification.objects.get(order_id=i.id)
+                notify.delete()
+            except Exception:
+                pass
         context.update({
-            "orders": models.Order.objects.all(),
+            "orders":orders,
             "delivers": CustomUser.objects.filter(is_deliver=True)
         })
         return context 
@@ -72,7 +79,7 @@ class Orders(View):
 
     def post(self, request):
         context = self.get_context_data()
-        
+
         if "active" in request.POST:
             context["orders"] = models.Order.objects.filter(status="Active")
             context["status"] = "Active"
@@ -85,6 +92,14 @@ class Orders(View):
             order = models.Order.objects.get(id=request.POST.get("order"))
             print(order)
             deliver = CustomUser.objects.get(id=request.POST.get("deliver"))
+
+            for i in order.order_items.all():
+                product = i.product
+                product.sold_amount += i.quantity
+                product_amount = int(product.amount)
+                product.amount = product_amount - i.quantity
+                product.save()
+
             order.deliver = deliver
             order.status = "Unactive"
             order.save()
@@ -112,6 +127,13 @@ class OrdersDetail(View):
     def get_context_data(self, **kwargs):
         context = {}
         item = models.Order.objects.get(id=self.kwargs.get("pk"))
+
+        try:
+            notify = Notification.objects.get(order_id=item.id)
+            notify.delete()
+        except Exception:
+            pass
+
         context.update({
             "item" : item,
             })

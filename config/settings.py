@@ -31,10 +31,14 @@ ALLOWED_HOSTS = []
 # Application definition
 
 INSTALLED_APPS = [
+
     "shop.apps.ShopConfig",
     "crm.apps.CrmConfig",
     "expances.apps.ExpancesConfig",
     "workers.apps.WorkersConfig",
+    "warehouse.apps.WarehouseConfig",
+    "sale.apps.SaleConfig",
+
     "orders.apps.OrdersConfig",
     'django.contrib.admin',
     'django.contrib.auth',
@@ -69,6 +73,7 @@ TEMPLATES = [
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
                 'shop.context_processors.wishlist_count',
+                'crm.context_pro.notifications',
             ],
         },
     },
